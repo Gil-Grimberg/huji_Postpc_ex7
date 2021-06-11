@@ -1,15 +1,18 @@
 package com.example.ex7;
 
+
 public class Order {
 
-    String orderId;
-    String customer_name;
-    int pickles;
-    boolean hummus;
-    boolean tahini;
-    String comment;
-    int status;
+    public String orderId;
+    public String customer_name;
+    public int pickles;
+    public boolean hummus;
+    public boolean tahini;
+    public String comment;
+    public int status;
 
+    public Order()
+    {}
     public Order(String id, String customer, int picklesNum, boolean isHummus, boolean isTahini, String comment, int state) {
         this.orderId = id;
         this.customer_name = customer;

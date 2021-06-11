@@ -8,6 +8,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -56,7 +57,8 @@ public class EditOrderScreen extends AppCompatActivity {
             boolean ishummus = isHummus.isChecked();
             boolean istahini = isTahini.isChecked();
             String note = comments.getText().toString();
-            holder.editOrder(userName, picklesNum, ishummus, istahini, note);
+            holder.editOrder(holder.getCurrentOrder().orderId,
+                    userName, picklesNum, ishummus, istahini, note,holder.WAITING);
 
         });
 
@@ -67,6 +69,13 @@ public class EditOrderScreen extends AppCompatActivity {
             // make sure order status is "waiting" before deleting! otherwise dont delete!!!
             Intent newOrderIntent = new Intent(EditOrderScreen.this, NewOrderScreen.class);
             startActivity(newOrderIntent);
+        });
+
+        holder.ordersLiveDataPublic.observe(this, new Observer<Order>() {
+            @Override
+            public void onChanged(Order order) {
+
+            }
         });
     }
 }

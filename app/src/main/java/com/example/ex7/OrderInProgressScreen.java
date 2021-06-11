@@ -27,5 +27,27 @@ public class OrderInProgressScreen extends AppCompatActivity {
         TextView tahini = findViewById(R.id.ordered_tahini);
         TextView comments = findViewById(R.id.ordered_comment);
 
+
+        Order currentOrder = holder.getCurrentOrder();
+        String name = currentOrder.customer_name;
+        String numberPickles = String.valueOf(currentOrder.pickles);
+        boolean hummusBool = currentOrder.hummus;
+        boolean tahiniBool = currentOrder.tahini;
+        String notes = currentOrder.comment;
+
+        // set text views
+
+        userName.setText(name);
+        pickles.setText(numberPickles);
+        if (hummusBool)
+            hummus.setText("Yes");
+        else
+            hummus.setText("No");
+        if (tahiniBool)
+            tahini.setText("Yes");
+        else
+            tahini.setText("No");
+        comments.setText(notes);
+
     }
 }

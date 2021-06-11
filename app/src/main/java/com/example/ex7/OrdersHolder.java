@@ -39,7 +39,7 @@ public class OrdersHolder {
         ordersLiveDataMutable.setValue(this.myOrder);
     }
     private void initializeFromSp() {
-        String orderId = sp.getString("orderID","noId");
+        String orderId = sp.getString("orderId","noId");
         String customer_name = sp.getString("customerName","noCustomer");
         int pickles = sp.getInt("pickles",-1);
         boolean hummus = sp.getBoolean("hummus",false);
@@ -78,34 +78,13 @@ public class OrdersHolder {
         order.put("orderId", this.myOrder.orderId);
         order.put("customer name", this.myOrder.customer_name);
         order.put("number of pickles", this.myOrder.pickles);
-        if (this.myOrder.hummus)
-            order.put("hummus", "yes");
-        else
-            order.put("hummus", "no");
-        if (this.myOrder.tahini)
-            order.put("tahini", "yes");
-        else
-            order.put("tahini", "no");
+        order.put("hummus", this.myOrder.hummus);
+        order.put("tahini", this.myOrder.tahini);
         order.put("comment", this.myOrder.comment);
         order.put("status", this.myOrder.status);
 
 // Add a new document with a generated ID
-        final String TAG = "1";
-        db.collection("orders").add(order)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-
-
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG,"DocumentSnapshot added with ID: " + documentReference.getId());
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.w(TAG, "Error adding document", e);
-            }
-        });
+        db.collection("orders").document(this.myOrder.orderId).set(order);
         // update order in sp
         updateSp();
         ordersLiveDataMutable.setValue(this.myOrder);
@@ -116,18 +95,33 @@ public class OrdersHolder {
 
 
 
-    public void editOrder(String customer, int picklesNum, boolean isHummus, boolean isTahini, String comment)
+    public void editOrder(String id, String customer, int picklesNum, boolean isHummus, boolean isTahini, String comment, int status)
     {
+        this.myOrder.orderId = id;
+        this.myOrder.status = status;
+        this.myOrder.customer_name = customer;
+        this.myOrder.pickles = picklesNum;
+        this.myOrder.hummus = isHummus;
+        this.myOrder.tahini = isTahini;
+        this.myOrder.comment = comment;
 
-        myOrder.customer_name = customer;
-        myOrder.pickles = picklesNum;
-        myOrder.hummus = isHummus;
-        myOrder.tahini = isTahini;
-        myOrder.comment = comment;
+        Map<String, Object> order = new HashMap<>();
+        order.put("orderId", this.myOrder.orderId);
+        order.put("customer name", this.myOrder.customer_name);
+        order.put("number of pickles", this.myOrder.pickles);
+        order.put("hummus", this.myOrder.hummus);
+        order.put("tahini", this.myOrder.tahini);
+        order.put("comment", this.myOrder.comment);
+        order.put("status", this.myOrder.status);
+
+        db.collection("orders").document(myOrder.orderId).set(order);
+
 
         updateSp();
         ordersLiveDataMutable.setValue(this.myOrder);
         // todo: update fireStore
+
+
     }
 
     public void updateStatus(int status)
@@ -135,14 +129,57 @@ public class OrdersHolder {
 
         this.myOrder.status = status;
         // todo: update fireStore
+
+//        Map<String, Object> order = new HashMap<>();
+//        order.put("orderId", this.myOrder.orderId);
+//        order.put("customer name", this.myOrder.customer_name);
+//        order.put("number of pickles", this.myOrder.pickles);
+//        if (this.myOrder.hummus)
+//            order.put("hummus", "yes");
+//        else
+//            order.put("hummus", "no");
+//        if (this.myOrder.tahini)
+//            order.put("tahini", "yes");
+//        else
+//            order.put("tahini", "no");
+//        order.put("comment", this.myOrder.comment);
+//        order.put("status", this.myOrder.status);
+//
+//        db.collection("orders").document(myOrder.orderId).set(order);
+
         updateSp();
         ordersLiveDataMutable.setValue(this.myOrder);
+    }
+    public void setOrder(Order newOrder)
+    {
+        this.myOrder = newOrder;
+        updateSp();
+        ordersLiveDataMutable.setValue(this.myOrder);
+
     }
 
     public void deleteOrder(String id)
     {
         // todo: update fireStore
         this.myOrder.status = DELETED;
+
+//        Map<String, Object> order = new HashMap<>();
+//        order.put("orderId", this.myOrder.orderId);
+//        order.put("customer name", this.myOrder.customer_name);
+//        order.put("number of pickles", this.myOrder.pickles);
+//        if (this.myOrder.hummus)
+//            order.put("hummus", "yes");
+//        else
+//            order.put("hummus", "no");
+//        if (this.myOrder.tahini)
+//            order.put("tahini", "yes");
+//        else
+//            order.put("tahini", "no");
+//        order.put("comment", this.myOrder.comment);
+//        order.put("status", this.myOrder.status);
+
+        db.collection("orders").document(id).delete();
+
         updateSp();
         ordersLiveDataMutable.setValue(this.myOrder);
     }
