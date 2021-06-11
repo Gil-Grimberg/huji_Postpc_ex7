@@ -3,19 +3,27 @@ package com.example.ex7;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.UUID;
 
 public class OrdersHolder {
     final int WAITING = 1;
     final int INPROGRESS = 2;
     final int READY = 3;
     final int DONE = 4;
+    final int DELETED = 5;
     private Order myOrder;
     private final Context context;
     private SharedPreferences sp;
-//    private final MutableLiveData<ArrayList<TodoItem>> toDoItemsLiveDataMutable = new MutableLiveData<>();
-//    public final LiveData<ArrayList<TodoItem>> toDoItemsLiveDataPublic = toDoItemsLiveDataMutable;
+    private final MutableLiveData<Order> ordersLiveDataMutable = new MutableLiveData<>();
+    public final LiveData<Order> ordersLiveDataPublic = ordersLiveDataMutable;
+    public final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public OrdersHolder(Context context) {
         this.context = context;
@@ -33,6 +41,67 @@ public class OrdersHolder {
         myOrder = new Order(orderId,customer_name,pickles,hummus,tahini,comment,status);
 
         }
+    private void updateSp() {
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("orderId",this.myOrder.orderId);
+        editor.putString("customerName",this.myOrder.customer_name);
+        editor.putInt("pickles",this.myOrder.pickles);
+        editor.putBoolean("hummus",this.myOrder.hummus);
+        editor.putBoolean("tahini",this.myOrder.tahini);
+        editor.putString("comment",this.myOrder.comment);
+        editor.putInt("status",this.myOrder.status);
+        editor.apply();
+    }
 
+    // todo:  getCurrentOrder ??
+
+    public void addNewOrder(String customer, int picklesNum, boolean isHummus, boolean isTahini, String comment)
+    {
+
+        this.myOrder.orderId = UUID.randomUUID().toString();;
+        this.myOrder.customer_name = customer;
+        this.myOrder.pickles = picklesNum;
+        this.myOrder.hummus = isHummus;
+        myOrder.tahini = isTahini;
+        myOrder.comment = comment;
+        myOrder.status = WAITING;
+
+        // update order in sp
+        updateSp();
+
+        // todo: update fireStore
+
+    }
+
+
+
+    public void editOrder(String customer, int picklesNum, boolean isHummus, boolean isTahini, String comment)
+    {
+
+        myOrder.customer_name = customer;
+        myOrder.pickles = picklesNum;
+        myOrder.hummus = isHummus;
+        myOrder.tahini = isTahini;
+        myOrder.comment = comment;
+
+        updateSp();
+
+        // todo: update fireStore
+    }
+
+    public void updateStatus(int status)
+    {
+
+        this.myOrder.status = status;
+        // todo: update fireStore
+        updateSp();
+    }
+
+    public void deleteOrder()
+    {
+        // todo: update fireStore
+        this.myOrder.status = DELETED;
+        updateSp();
+    }
 }
 

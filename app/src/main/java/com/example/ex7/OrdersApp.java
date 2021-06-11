@@ -7,21 +7,20 @@ import androidx.annotation.RequiresApi;
 
 public class OrdersApp extends Application {
 
-    private OrdersHolder dataBase;  //todo: change to ordersHolder
+    private OrdersHolder localDataBase;  //todo: change to ordersHolder
 
     public OrdersHolder getDataBase(){
-        return dataBase;
+        return localDataBase;
     }
     public static OrdersApp instance = null;
 
     public static OrdersApp getInstance(){
         return instance;
     }
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onCreate() {
         super.onCreate();
         instance = this;
-        dataBase = new OrdersHolder(this);
+        localDataBase = new OrdersHolder(this);
     }
 }
