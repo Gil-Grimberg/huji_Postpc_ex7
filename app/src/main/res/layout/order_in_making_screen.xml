@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:text="Rachel Sandwich"
+        android:textSize="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/sub_title"
+        android:layout_width="320dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="60dp"
+        android:text="Please wait while Rachel is making the best sandwich for you :)"
+        android:textSize="20dp"
+        app:layout_constraintLeft_toLeftOf="@id/title"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
+    <TextView
+        android:id="@+id/details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Your order:"
+        android:textSize="20dp"
+        app:layout_constraintLeft_toLeftOf="@id/title"
+        app:layout_constraintTop_toBottomOf="@+id/sub_title" />
+
+    <TextView
+        android:id="@+id/customer_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Your name:"
+        android:textSize="15dp"
+        app:layout_constraintLeft_toLeftOf="@id/sub_title"
+        app:layout_constraintTop_toBottomOf="@+id/details" />
+
+    <TextView
+        android:id="@+id/pickles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="pickles:"
+        android:textSize="15dp"
+        app:layout_constraintLeft_toLeftOf="@id/sub_title"
+        app:layout_constraintTop_toBottomOf="@+id/customer_name" />
+
+    <TextView
+        android:id="@+id/hummus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Hummus?"
+        android:textSize="15dp"
+        app:layout_constraintLeft_toLeftOf="@id/sub_title"
+        app:layout_constraintTop_toBottomOf="@+id/pickles" />
+
+    <TextView
+        android:id="@+id/tahini"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Tahini?"
+        android:textSize="15dp"
+        app:layout_constraintLeft_toLeftOf="@id/sub_title"
+        app:layout_constraintTop_toBottomOf="@+id/hummus" />
+
+    <TextView
+        android:id="@+id/comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Comments:"
+        android:textSize="15dp"
+        app:layout_constraintLeft_toLeftOf="@id/sub_title"
+        app:layout_constraintTop_toBottomOf="@+id/tahini" />
+
+    <TextView
+        android:id="@+id/enter_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="customer name goes here"
+        app:layout_constraintLeft_toLeftOf="@id/customer_name"
+        app:layout_constraintBottom_toBottomOf="@+id/customer_name"
+        android:layout_marginStart="90dp" />
+
+    <TextView
+        android:id="@+id/enter_pickles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="x pickles"
+        app:layout_constraintBottom_toBottomOf="@id/pickles"
+        app:layout_constraintLeft_toLeftOf="@id/pickles"
+        android:layout_marginStart="90dp"
+        />
+    <TextView
+        android:id="@+id/hummus_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="yes or no"
+        app:layout_constraintBottom_toBottomOf="@+id/hummus"
+        app:layout_constraintLeft_toLeftOf="@+id/hummus"
+        android:layout_marginStart="90dp"/>
+
+    <TextView
+        android:id="@+id/tahini_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="yes or no"
+        app:layout_constraintBottom_toBottomOf="@+id/tahini"
+        app:layout_constraintLeft_toLeftOf="@+id/tahini"
+        android:layout_marginStart="90dp"/>
+
+    <TextView
+        android:id="@+id/enter_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="your comments here..."
+        app:layout_constraintLeft_toLeftOf="@id/comment"
+        app:layout_constraintBottom_toBottomOf="@+id/comment"
+        android:layout_marginStart="90dp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
