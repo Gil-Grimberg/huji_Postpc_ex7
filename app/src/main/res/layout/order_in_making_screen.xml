@@ -89,7 +89,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tahini" />
 
     <TextView
-        android:id="@+id/enter_name"
+        android:id="@+id/userName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="customer name goes here"
@@ -98,7 +98,7 @@
         android:layout_marginStart="90dp" />
 
     <TextView
-        android:id="@+id/enter_pickles"
+        android:id="@+id/ordered_pickles"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="x pickles"
@@ -107,7 +107,7 @@
         android:layout_marginStart="90dp"
         />
     <TextView
-        android:id="@+id/hummus_switch"
+        android:id="@+id/ordered_hummus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="yes or no"
@@ -116,7 +116,7 @@
         android:layout_marginStart="90dp"/>
 
     <TextView
-        android:id="@+id/tahini_switch"
+        android:id="@+id/ordered_tahini"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="yes or no"
@@ -125,7 +125,7 @@
         android:layout_marginStart="90dp"/>
 
     <TextView
-        android:id="@+id/enter_comment"
+        android:id="@+id/ordered_comment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="your comments here..."

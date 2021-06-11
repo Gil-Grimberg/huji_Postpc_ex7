@@ -80,7 +80,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tahini" />
 
     <EditText
-        android:id="@+id/enter_name"
+        android:id="@+id/update_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Enter your name"
@@ -89,7 +89,7 @@
         android:layout_marginStart="90dp" />
 
     <NumberPicker
-        android:id="@+id/enter_pickles"
+        android:id="@+id/update_pickles"
         android:layout_width="62dp"
         android:layout_height="28dp"
         app:layout_constraintBottom_toBottomOf="@id/pickles"
@@ -97,7 +97,7 @@
         android:layout_marginStart="90dp"
         />
     <Switch
-        android:id="@+id/hummus_switch"
+        android:id="@+id/update_hummus_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="not a fan"
@@ -106,7 +106,7 @@
         android:layout_marginStart="90dp"
         tools:ignore="UseSwitchCompatOrMaterialXml" />
     <Switch
-        android:id="@+id/tahini_switch"
+        android:id="@+id/update_tahini_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="not a fan"
@@ -116,7 +116,7 @@
         tools:ignore="UseSwitchCompatOrMaterialXml" />
 
     <EditText
-        android:id="@+id/enter_comment"
+        android:id="@+id/update_enter_comment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Any comments?"
@@ -130,10 +130,21 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/enter_comment"
+        app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginStart="10dp"
+        android:layout_marginBottom="10dp"
         app:srcCompat="@android:drawable/ic_menu_send" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/delete_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
+        app:layout_constraintLeft_toRightOf="@+id/update_button"
+        app:layout_constraintTop_toTopOf="@+id/update_button"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="10dp"
+         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

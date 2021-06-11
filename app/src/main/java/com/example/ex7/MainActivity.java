@@ -3,6 +3,7 @@ package com.example.ex7;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -17,39 +18,27 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
     public OrdersHolder holder = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.new_order_screen);
         if (holder == null) {
             holder = OrdersApp.getInstance().getDataBase();
         }
+        // todo: if status is DONE or not exists than go to new_order_screen and etc..
+        Intent newOrderIntent = new Intent(MainActivity.this, NewOrderScreen.class);
+        startActivity(newOrderIntent);
+        // todo: if status is waiting than go to EditOrderScreen
+
+        //todo: if status is In Progress than go to OrderInMakingScreen
+        Intent orderInProgressIntent = new Intent(MainActivity.this, OrderInProgressScreen.class);
+        startActivity(orderInProgressIntent);
+        //todo: if status is Ready than go to OrderIsReadyScreen
+
+//        setContentView(R.layout.new_order_screen);
+
     }
 
 }
 
 
-//    FirebaseFirestore db = FirebaseFirestore.getInstance();
-//    Map<String, Object> user = new HashMap<>();
-//        user.put("first", "Alan");
-//                user.put("middle", "Mathison");
-//                user.put("last", "Turing");
-//                user.put("born", 1912);
-//
-//// Add a new document with a generated ID
-//final String TAG = "1";
-//        db.collection("orders").add(user)
-//        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-//
-//
-//@Override
-//public void onSuccess(DocumentReference documentReference) {
-//        Log.d(TAG,"DocumentSnapshot added with ID: " + documentReference.getId());
-//
-//        }
-//        }).addOnFailureListener(new OnFailureListener() {
-//@Override
-//public void onFailure(@NonNull Exception e) {
-//        Log.w(TAG, "Error adding document", e);
-//        }
-//        });
