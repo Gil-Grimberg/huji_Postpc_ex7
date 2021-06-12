@@ -90,8 +90,9 @@
 
     <EditText
         android:id="@+id/update_pickles"
-        android:layout_width="62dp"
-        android:layout_height="28dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="some pickles?"
         app:layout_constraintBottom_toBottomOf="@id/pickles"
         app:layout_constraintLeft_toLeftOf="@id/pickles"
         android:layout_marginStart="90dp"

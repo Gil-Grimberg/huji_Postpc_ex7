@@ -3,15 +3,18 @@ package com.example.ex7;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -19,6 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.List;
+import java.util.Objects;
 
 public class NewOrderScreen extends AppCompatActivity {
     public OrdersHolder holder = null;
@@ -27,68 +31,47 @@ public class NewOrderScreen extends AppCompatActivity {
     final int READY = 3;
     final int DONE = 4;
     final int DELETED = 5;
+    private int status;
 
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (holder == null) {
             holder = OrdersApp.getInstance().getDataBase();
         }
 
-        holder.db.collection("orders").addSnapshotListener(new EventListener<QuerySnapshot>()
-        {
+        String id = holder.myOrder.orderId;
+        //todo: set listener to the fireStore, so i can get the current status of the order
+        holder.db.collection("orders").document(id).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                if (error!=null){ }
-                else if  (value==null)
-                {
-                    // delete order
-                    holder.deleteOrder(holder.getCurrentOrder().orderId);
-                }
-                else
-                {
-                    List<DocumentSnapshot> documents = value.getDocuments();
-                    boolean isIdExists = false;
-                    for (DocumentSnapshot document : documents)
-                    {
-                        Order order = document.toObject(Order.class);
-                        if (holder.getCurrentOrder().orderId .equals(order.orderId))
-                        {
-                            holder.setOrder(order);
-                            isIdExists = true;
-                        }
-                    }
-                    if (!isIdExists)
-                    {
-                        holder.updateStatus(DELETED);
-                    }
-
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                try {
+                    status = Integer.parseInt(Objects.requireNonNull(documentSnapshot.get("status")).toString());
+                } catch (Exception e) {
+                    status = DELETED;
                 }
 
-            } });
+                if (status == READY) {
+                    // if status is READY than go to OrderIsReadyScreen
+                    Intent orderIsReadyIntent = new Intent(NewOrderScreen.this, OrderIsReadyScreen.class);
+                    startActivity(orderIsReadyIntent);
+                    finish();
+                } else if (status == WAITING) {
+                    // if status is waiting than go to EditOrderScreen
+                    Intent EditOrderIntent = new Intent(NewOrderScreen.this, EditOrderScreen.class);
+                    startActivity(EditOrderIntent);
+                    finish();
+                } else if (status == INPROGRESS) {
 
-        int status = holder.getCurrentOrder().status;
+                    //if status is In Progress than go to OrderInMakingScreen
+                    Intent orderInProgressIntent = new Intent(NewOrderScreen.this, OrderInProgressScreen.class);
+                    startActivity(orderInProgressIntent);
+                    finish();
 
-        if (status==WAITING) {
-            // if status is waiting than go to EditOrderScreen
-//            Intent EditOrderIntent = new Intent(EditOrderScreen.this, EditOrderScreen.class);
-//            startActivity(EditOrderIntent);
-        }
-        else if (status==INPROGRESS) {
-
-            //if status is In Progress than go to OrderInMakingScreen
-            Intent orderInProgressIntent = new Intent(NewOrderScreen.this, OrderInProgressScreen.class);
-            startActivity(orderInProgressIntent);
-        }
-        else if(status==READY)
-        {
-            // if status is READY than go to OrderIsReadyScreen
-            Intent orderIsReadyIntent = new Intent(NewOrderScreen.this,OrderIsReadyScreen.class);
-            startActivity(orderIsReadyIntent);
-        }
-
+                }
+            }
+        });
 
         setContentView(R.layout.new_order_screen);
         TextView inputName = findViewById(R.id.enter_name);
@@ -98,47 +81,82 @@ public class NewOrderScreen extends AppCompatActivity {
         TextView comments = findViewById(R.id.enter_comment);
         FloatingActionButton send = findViewById(R.id.send_button);
 
-        isHummus.setOnClickListener(v->{
-            if (isHummus.isChecked())
-            {
+        isHummus.setOnClickListener(v -> {
+            if (isHummus.isChecked()) {
                 isHummus.setText("Yes please!");
-            }
-            else
-            {
+            } else {
                 isHummus.setText("not a fan");
             }
         });
 
-        isTahini.setOnClickListener(v->{
-            if (isTahini.isChecked())
-            {
+        isTahini.setOnClickListener(v -> {
+            if (isTahini.isChecked()) {
                 isTahini.setText("Yes please!");
 
-            }
-            else
-            {
+            } else {
                 isTahini.setText("not a fan");
             }
         });
 
-        send.setOnClickListener(v->{
+        send.setOnClickListener(v -> {
             String name = inputName.getText().toString();
-            String picklesNumber = pickles.getText().toString();
+            int picklesNumber;
+            try {
+                picklesNumber = Integer.parseInt(pickles.getText().toString());
+                if (picklesNumber < 0 || picklesNumber > 10) {
+                    Toast.makeText(getApplicationContext(), "you cam only choose 0-10 pickles!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
+            catch (Exception e)
+            {
+                Toast.makeText(getApplicationContext(), "only numbers between 0-10 are allow!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             boolean hummus = isHummus.isChecked();
             boolean tahini = isTahini.isChecked();
             String comment = comments.getText().toString();
-            holder.addNewOrder(name,picklesNumber,hummus,tahini,comment);
+            holder.addNewOrder(name, picklesNumber, hummus, tahini, comment);
             // todo: start editOrder activity
             Intent editOrderIntent = new Intent(NewOrderScreen.this, EditOrderScreen.class);
             startActivity(editOrderIntent);
+            finish();
         });
+        holder.db.collection("orders").document(id)
+                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException e) {
+                        if (e != null || value == null) {
+                            Log.d("1", "something wrong...");
+                        } else {
+                            try {
+                                status = Integer.parseInt(Objects.requireNonNull(value.get("status")).toString());
+                            } catch (Exception err) {
+                                status = DELETED;
+                            }
+                            if (status == READY) {
+                                // if status is READY than go to OrderIsReadyScreen
+                                Intent orderIsReadyIntent = new Intent(NewOrderScreen.this, OrderIsReadyScreen.class);
+                                startActivity(orderIsReadyIntent);
+                                finish();
+                            } else if (status == WAITING) {
+                                // if status is waiting than go to EditOrderScreen
+                                Intent EditOrderIntent = new Intent(NewOrderScreen.this, EditOrderScreen.class);
+                                startActivity(EditOrderIntent);
+                                finish();
+                            } else if (status == INPROGRESS) {
 
-        holder.ordersLiveDataPublic.observe(this, new Observer<Order>() {
-            @Override
-            public void onChanged(Order order) {
+                                //if status is In Progress than go to OrderInMakingScreen
+                                Intent orderInProgressIntent = new Intent(NewOrderScreen.this, OrderInProgressScreen.class);
+                                startActivity(orderInProgressIntent);
+                                finish();
 
-            }
-        });
+                            }
+                        }
+                    }
+                });
+
     }
 
 }
