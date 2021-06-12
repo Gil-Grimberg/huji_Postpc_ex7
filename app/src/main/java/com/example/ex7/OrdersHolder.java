@@ -13,6 +13,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -34,12 +35,14 @@ public class OrdersHolder {
     public Order myOrder;
     public final Context context;
     public SharedPreferences sp;
-    public final FirebaseFirestore db = FirebaseFirestore.getInstance();
-
+    public FirebaseApp app;
+    public FirebaseFirestore db;
     public OrdersHolder(Context context) {
         this.context = context;
         this.sp = context.getSharedPreferences("local_db", Context.MODE_PRIVATE);
         initializeFromSp();
+        app = FirebaseApp.initializeApp(this.context);
+        db = FirebaseFirestore.getInstance();
         // todo: update myOrder from fireStore
         this.db.collection("orders").document(this.myOrder.orderId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
