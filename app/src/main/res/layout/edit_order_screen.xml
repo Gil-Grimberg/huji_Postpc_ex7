@@ -88,7 +88,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/customer_name"
         android:layout_marginStart="90dp" />
 
-    <NumberPicker
+    <EditText
         android:id="@+id/update_pickles"
         android:layout_width="62dp"
         android:layout_height="28dp"

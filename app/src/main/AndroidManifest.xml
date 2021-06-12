@@ -19,6 +19,8 @@
         </activity>
         <activity android:name=".NewOrderScreen"/>
         <activity android:name=".EditOrderScreen"/>
+        <activity android:name=".OrderInProgressScreen"/>
+        <activity android:name=".OrderIsReadyScreen"/>
     </application>
 
 </manifest>

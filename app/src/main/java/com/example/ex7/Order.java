@@ -5,7 +5,7 @@ public class Order {
 
     public String orderId;
     public String customer_name;
-    public int pickles;
+    public String pickles;
     public boolean hummus;
     public boolean tahini;
     public String comment;
@@ -13,7 +13,7 @@ public class Order {
 
     public Order()
     {}
-    public Order(String id, String customer, int picklesNum, boolean isHummus, boolean isTahini, String comment, int state) {
+    public Order(String id, String customer, String picklesNum, boolean isHummus, boolean isTahini, String comment, int state) {
         this.orderId = id;
         this.customer_name = customer;
         this.pickles = picklesNum;

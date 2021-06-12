@@ -12,6 +12,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,21 +40,21 @@ public class OrdersHolder {
         ordersLiveDataMutable.setValue(this.myOrder);
     }
     private void initializeFromSp() {
-        String orderId = sp.getString("orderId","noId");
-        String customer_name = sp.getString("customerName","noCustomer");
-        int pickles = sp.getInt("pickles",-1);
-        boolean hummus = sp.getBoolean("hummus",false);
-        boolean tahini  = sp.getBoolean("tahini",false);
-        String comment = sp.getString("comment","noComment");
-        int status = sp.getInt("status",0);
+        String orderId = this.sp.getString("orderId","noId");
+        String customer_name = this.sp.getString("customerName","noCustomer");
+        String pickles = this.sp.getString("pickles","none");
+        boolean hummus = this.sp.getBoolean("hummus",false);
+        boolean tahini  = this.sp.getBoolean("tahini",false);
+        String comment = this.sp.getString("comment","noComment");
+        int status = this.sp.getInt("status",0);
         this.myOrder = new Order(orderId,customer_name,pickles,hummus,tahini,comment,status);
 
         }
     private void updateSp() {
-        SharedPreferences.Editor editor = sp.edit();
+        SharedPreferences.Editor editor = this.sp.edit();
         editor.putString("orderId",this.myOrder.orderId);
         editor.putString("customerName",this.myOrder.customer_name);
-        editor.putInt("pickles",this.myOrder.pickles);
+        editor.putString("pickles",this.myOrder.pickles);
         editor.putBoolean("hummus",this.myOrder.hummus);
         editor.putBoolean("tahini",this.myOrder.tahini);
         editor.putString("comment",this.myOrder.comment);
@@ -61,9 +62,7 @@ public class OrdersHolder {
         editor.apply();
     }
 
-    // todo:  getCurrentOrder ??
-
-    public void addNewOrder(String customer, int picklesNum, boolean isHummus, boolean isTahini, String comment)
+    public void addNewOrder(String customer, String picklesNum, boolean isHummus, boolean isTahini, String comment)
     {
 
         this.myOrder.orderId = UUID.randomUUID().toString();;
@@ -83,19 +82,17 @@ public class OrdersHolder {
         order.put("comment", this.myOrder.comment);
         order.put("status", this.myOrder.status);
 
+        updateSp();
 // Add a new document with a generated ID
         db.collection("orders").document(this.myOrder.orderId).set(order);
-        // update order in sp
-        updateSp();
-        ordersLiveDataMutable.setValue(this.myOrder);
 
-        // todo: update fireStore
+        ordersLiveDataMutable.setValue(this.myOrder);
 
     }
 
 
 
-    public void editOrder(String id, String customer, int picklesNum, boolean isHummus, boolean isTahini, String comment, int status)
+    public void editOrder(String id, String customer, String picklesNum, boolean isHummus, boolean isTahini, String comment, int status)
     {
         this.myOrder.orderId = id;
         this.myOrder.status = status;
@@ -114,12 +111,11 @@ public class OrdersHolder {
         order.put("comment", this.myOrder.comment);
         order.put("status", this.myOrder.status);
 
+        updateSp();
+
         db.collection("orders").document(myOrder.orderId).set(order);
 
-
-        updateSp();
         ordersLiveDataMutable.setValue(this.myOrder);
-        // todo: update fireStore
 
 
     }
@@ -128,26 +124,11 @@ public class OrdersHolder {
     {
 
         this.myOrder.status = status;
-        // todo: update fireStore
-
-//        Map<String, Object> order = new HashMap<>();
-//        order.put("orderId", this.myOrder.orderId);
-//        order.put("customer name", this.myOrder.customer_name);
-//        order.put("number of pickles", this.myOrder.pickles);
-//        if (this.myOrder.hummus)
-//            order.put("hummus", "yes");
-//        else
-//            order.put("hummus", "no");
-//        if (this.myOrder.tahini)
-//            order.put("tahini", "yes");
-//        else
-//            order.put("tahini", "no");
-//        order.put("comment", this.myOrder.comment);
-//        order.put("status", this.myOrder.status);
-//
-//        db.collection("orders").document(myOrder.orderId).set(order);
 
         updateSp();
+
+        db.collection("orders").document(myOrder.orderId).update("status",status);
+
         ordersLiveDataMutable.setValue(this.myOrder);
     }
     public void setOrder(Order newOrder)
@@ -160,27 +141,12 @@ public class OrdersHolder {
 
     public void deleteOrder(String id)
     {
-        // todo: update fireStore
         this.myOrder.status = DELETED;
 
-//        Map<String, Object> order = new HashMap<>();
-//        order.put("orderId", this.myOrder.orderId);
-//        order.put("customer name", this.myOrder.customer_name);
-//        order.put("number of pickles", this.myOrder.pickles);
-//        if (this.myOrder.hummus)
-//            order.put("hummus", "yes");
-//        else
-//            order.put("hummus", "no");
-//        if (this.myOrder.tahini)
-//            order.put("tahini", "yes");
-//        else
-//            order.put("tahini", "no");
-//        order.put("comment", this.myOrder.comment);
-//        order.put("status", this.myOrder.status);
+        updateSp();
 
         db.collection("orders").document(id).delete();
 
-        updateSp();
         ordersLiveDataMutable.setValue(this.myOrder);
     }
     public Order getCurrentOrder()

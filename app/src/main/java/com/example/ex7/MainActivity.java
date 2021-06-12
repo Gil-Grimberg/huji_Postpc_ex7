@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
             for (DocumentSnapshot document : documents)
             {
                 Order order = document.toObject(Order.class);
-                if (holder.getCurrentOrder().orderId == order.orderId)
+                if (holder.getCurrentOrder().orderId .equals(order.orderId))
                 {
                     holder.setOrder(order);
                     isIdExists = true;
@@ -94,8 +94,6 @@ public class MainActivity extends AppCompatActivity {
             Intent orderIsReadyIntent = new Intent(MainActivity.this,OrderIsReadyScreen.class);
             startActivity(orderIsReadyIntent);
         }
-
-//        setContentView(R.layout.new_order_screen);
 
     }
 
