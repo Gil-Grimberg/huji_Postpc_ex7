@@ -1,23 +1,16 @@
 package com.example.ex7;
 
-import android.content.Intent;
 import android.widget.EditText;
 import android.widget.Switch;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import junit.framework.TestCase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 import org.robolectric.annotation.LooperMode;
 import org.robolectric.shadow.api.Shadow;
-
+import org.robolectric.Robolectric;
+import org.robolectric.RobolectricTestRunner;
 import static org.junit.Assert.*;
-import static org.robolectric.Shadows.shadowOf;
 
 @Config(manifest=Config.NONE)
 @LooperMode(LooperMode.Mode.PAUSED)
