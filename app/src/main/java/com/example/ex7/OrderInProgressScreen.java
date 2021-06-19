@@ -24,12 +24,11 @@ import java.util.Objects;
 public class OrderInProgressScreen extends AppCompatActivity {
 
     public OrdersHolder holder = null;
-    final int WAITING = 1;
-    final int INPROGRESS = 2;
-    final int READY = 3;
-    final int DONE = 4;
-    final int DELETED = 5;
-    private int status;
+    final String WAITING = "waiting";
+    final String INPROGRESS = "in-progress";
+    final String READY = "ready";
+    final String DONE = "done";
+    private String status;
 
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     @Override
@@ -44,24 +43,24 @@ public class OrderInProgressScreen extends AppCompatActivity {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 try {
-                    status = Integer.parseInt(Objects.requireNonNull(documentSnapshot.get("status")).toString());
+                    status = Objects.requireNonNull(documentSnapshot.get("status")).toString();
                 } catch (Exception e) {
-                    status = DELETED;
+                    status = DONE;
                 }
 
-                if (status == DONE || status == DELETED) {
+                if (status.equals(DONE)) {
                     //  if status is DONE or not exists or Deleted than go to new_order_screen and etc..
                     Intent newOrderIntent = new Intent(OrderInProgressScreen.this, NewOrderScreen.class);
                     startActivity(newOrderIntent);
                     finish();
                 }
-                else if (status == WAITING) {
+                else if (status.equals(WAITING)) {
                     // if status is waiting than go to EditOrderScreen
                     Intent EditOrderIntent = new Intent(OrderInProgressScreen.this, EditOrderScreen.class);
                     startActivity(EditOrderIntent);
                     finish();
                 }
-                else if (status == READY) {
+                else if (status.equals(READY)) {
                     // if status is READY than go to OrderIsReadyScreen
                     Intent orderIsReadyIntent = new Intent(OrderInProgressScreen.this, OrderIsReadyScreen.class);
                     startActivity(orderIsReadyIntent);
@@ -112,21 +111,21 @@ public class OrderInProgressScreen extends AppCompatActivity {
                         else
                         {
                             try {
-                                status = Integer.parseInt(Objects.requireNonNull(value.get("status")).toString());
+                                status = Objects.requireNonNull(value.get("status")).toString();
                             } catch (Exception err) {
-                                status = DELETED;
+                                status = DONE;
                             }
-                            if (status == DONE || status == DELETED) {
+                            if (status.equals(DONE)) {
                                 //  if status is DONE or not exists or Deleted than go to new_order_screen and etc..
                                 Intent newOrderIntent = new Intent(OrderInProgressScreen.this, NewOrderScreen.class);
                                 startActivity(newOrderIntent);
                                 finish();
-                            }  else if (status == WAITING) {
+                            }  else if (status.equals(WAITING)) {
                                 // if status is waiting than go to EditOrderScreen
                                 Intent EditOrderIntent = new Intent(OrderInProgressScreen.this, EditOrderScreen.class);
                                 startActivity(EditOrderIntent);
                                 finish();
-                            } else if (status == READY) {
+                            } else if (status.equals(READY)) {
                                 // if status is READY than go to OrderIsReadyScreen
                                 Intent orderIsReadyIntent = new Intent(OrderInProgressScreen.this, OrderIsReadyScreen.class);
                                 startActivity(orderIsReadyIntent);

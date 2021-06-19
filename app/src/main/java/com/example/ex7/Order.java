@@ -9,7 +9,7 @@ public class Order {
     public boolean hummus;
     public boolean tahini;
     public String comment;
-    public int status;
+    public String status;
 
     public Order()
     {}
@@ -17,7 +17,7 @@ public class Order {
     {
         this.orderId = id;
     }
-    public Order(String id, String customer, int picklesNum, boolean isHummus, boolean isTahini, String comment, int state) {
+    public Order(String id, String customer, int picklesNum, boolean isHummus, boolean isTahini, String comment, String state) {
         this.orderId = id;
         this.customer_name = customer;
         this.pickles = picklesNum;

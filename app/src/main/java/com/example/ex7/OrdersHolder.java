@@ -27,11 +27,10 @@ import java.util.Set;
 import java.util.UUID;
 
 public class OrdersHolder {
-    final int WAITING = 1;
-    final int INPROGRESS = 2;
-    final int READY = 3;
-    final int DONE = 4;
-    final int DELETED = 5;
+    final String WAITING = "waiting";
+    final String INPROGRESS = "in-progress";
+    final String READY = "ready";
+    final String DONE = "done";
     public Order myOrder;
     public final Context context;
     public SharedPreferences sp;
@@ -53,7 +52,7 @@ public class OrdersHolder {
                     boolean hummus = Boolean.parseBoolean(documentSnapshot.get("hummus").toString());
                     boolean tahini = Boolean.parseBoolean(documentSnapshot.get("tahini").toString());
                     String comment = documentSnapshot.getString("comment");
-                    int status = Integer.parseInt(Objects.requireNonNull(documentSnapshot.get("status")).toString());
+                    String status = Objects.requireNonNull(documentSnapshot.get("status")).toString();
                     myOrder = new Order(myOrder.orderId,customer_name,pickles,hummus,tahini,comment,status);
                 } catch (Exception e) {
                     Log.d("1","problem with initiating holder from dataStore");
@@ -100,7 +99,7 @@ public class OrdersHolder {
 
 
 
-    public void editOrder(String id, String customer, int picklesNum, boolean isHummus, boolean isTahini, String comment, int status)
+    public void editOrder(String id, String customer, int picklesNum, boolean isHummus, boolean isTahini, String comment, String status)
     {
         this.myOrder.orderId = id;
         this.myOrder.status = status;
@@ -126,7 +125,7 @@ public class OrdersHolder {
 
     }
 
-    public void updateStatus(int status)
+    public void updateStatus(String status)
     {
 
         this.myOrder.status = status;
@@ -145,7 +144,7 @@ public class OrdersHolder {
 
     public void deleteOrder(String id)
     {
-        this.myOrder.status = DELETED;
+        this.myOrder.status = DONE;
 
         updateSp();
 
